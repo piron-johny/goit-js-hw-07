@@ -3,17 +3,21 @@ import { galleryItems } from "./gallery-items.js";
 
 const galleryEl = document.querySelector(".gallery");
 
-function modalElemnt(evt) {
+function onModalElemnt(evt) {
   evt.preventDefault();
-  basicLightbox
-    .create(
-      `
-        <img src="${evt.target.dataset.source}" width="800" height="600">
-      `
-    )
-    .show();
-  if (basicLightbox){
-    console.log(evt.target);
+
+  if (evt.target.nodeName !== "IMG") {return}
+
+  const instance = basicLightbox.create(`
+    <img src="${evt.target.dataset.source}" width="800" height="600">
+  `);
+  instance.show();
+
+  if (basicLightbox.visible()) {
+    document.addEventListener("keydown", (evt) => {
+      if (evt.key !== "Escape") {return}
+      instance.close();
+    });
   }
 }
 
@@ -33,7 +37,7 @@ function createHTMLMarkup(elem) {
   );
 }
 
-galleryEl.addEventListener("click", modalElemnt);
+galleryEl.addEventListener("click", onModalElemnt);
 
 const genGalleryItem = (galleryItems) => {
   galleryItems.map((elem) => createHTMLMarkup(elem));
