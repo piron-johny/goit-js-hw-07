@@ -1,34 +1,10 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 // console.log(galleryItems);
-
-
-const galleryEl = document.querySelector('.gallery');
-
-let gallery = new SimpleLightbox('.gallery a');
-
-
-galleryEl.addEventListener('click', onOriginalImg)
-
-
-function onOriginalImg (e){
-  e.preventDefault();
-  
-}
-
-
+const galleryEl = document.querySelector(".gallery");
 
 function createHTMLMarkup(elem) {
-  gallery.on('show.simplelightbox', function () {
-    document.body.insertAdjacentHTML(
-      "beforeend",
-      `
-      <img src="${evt.target.dataset.source}" width="800" height="600">
-    `
-    );
-  });
-
   galleryEl.insertAdjacentHTML(
     "beforeend",
     `
@@ -37,11 +13,19 @@ function createHTMLMarkup(elem) {
       </a>
     `
   );
-};
+}
 
 const genGalleryItem = (galleryItems) => {
   galleryItems.map((elem) => createHTMLMarkup(elem));
 };
 genGalleryItem(galleryItems);
 
-
+let lightbox = new SimpleLightbox(".gallery a", {
+  captions: true,
+  captionsData: "alt",
+  captionDelay: 250,
+  overlay: true,
+  preloading: true,
+  alertErrorMessage:
+    "Изображение не найдено, будет загружено следующее изображение",
+});
