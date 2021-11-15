@@ -6,20 +6,22 @@ const galleryEl = document.querySelector(".gallery");
 function onModalElemnt(evt) {
   evt.preventDefault();
 
-  if (evt.target.nodeName !== "IMG") {return}
+  if (evt.target.nodeName !== "IMG") { return }
 
   const instance = basicLightbox.create(`
     <img src="${evt.target.dataset.source}" width="800" height="600">
   `);
   instance.show();
 
-  if (basicLightbox.visible()) {
-    document.addEventListener("keydown", (evt) => {
-      if (evt.key !== "Escape") {return}
-      instance.close();
-    });
-  }
+  if (basicLightbox.visible())document.addEventListener("keydown", onKeyClose)
+  if (!basicLightbox.visible()) {document.removeEventListener('keydown', onKeyClose)}
+
+  function onKeyClose(evt) {
+    if (evt.key !== "Escape") { return }
+    instance.close();
+  };
 }
+
 
 function createHTMLMarkup(elem) {
   galleryEl.insertAdjacentHTML(
